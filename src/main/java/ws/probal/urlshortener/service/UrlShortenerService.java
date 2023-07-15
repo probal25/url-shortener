@@ -22,7 +22,7 @@ public class UrlShortenerService {
 
     @Value("${base.url}")
     private String baseUrl;
-    private final String GET_ORIGINAL_URL_ENDPOINT = "/rest/api/v1/url-shortener/";
+    private final String GET_ORIGINAL_URL_ENDPOINT = "/api/v1/url-shortener/";
 
     public ShortenedUrlResponse shortTheUrl(UrlRequest request) {
 

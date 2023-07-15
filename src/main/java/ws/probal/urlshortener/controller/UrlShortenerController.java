@@ -16,7 +16,7 @@ import static ws.probal.urlshortener.service.UrlShortenerService.validateRequest
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rest/api/v1/url-shortener")
+@RequestMapping("/api/v1/url-shortener")
 public class UrlShortenerController {
 
     private final UrlShortenerService urlShortenerService;
