@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import ws.probal.urlshortener.common.exceptions.InvalidUrlException;
 import ws.probal.urlshortener.common.exceptions.ResourceNotFoundException;
 import ws.probal.urlshortener.common.utils.EncryptionUtils;
-import ws.probal.urlshortener.model.entity.redis.Url;
+import ws.probal.urlshortener.model.entity.Url;
 import ws.probal.urlshortener.model.request.UrlRequest;
 import ws.probal.urlshortener.model.response.OriginalUrlResponse;
 import ws.probal.urlshortener.model.response.ShortenedUrlResponse;
@@ -24,7 +24,7 @@ public class UrlShortenerService {
 
     @Value("${base.url}")
     private String baseUrl;
-    private final static String getOriginalUrlEndpoint = "/api/v1/url-shortener/";
+    private static final String GetOriginalUrlEndpoint = "/api/v1/url-shortener/";
 
     public ShortenedUrlResponse shortTheUrl(UrlRequest request) {
 
@@ -37,7 +37,7 @@ public class UrlShortenerService {
 
         Url url = new Url();
         url.setOriginalUrl(originalUrl);
-        url.setKey(key);
+        url.setShortKey(key);
         url.setShortUrl(makeUrlShorter(key));
         url.setCreated(new Date());
         urlRepository.save(url);
@@ -49,7 +49,7 @@ public class UrlShortenerService {
     }
 
     public OriginalUrlResponse getUrlByKey(String key) {
-        Url url = urlRepository.findByKey(key).orElse(null);
+        Url url = urlRepository.findByShortKey(key).orElse(null);
 
         if (Objects.isNull(url)) {
             throw new ResourceNotFoundException(key);
@@ -67,7 +67,7 @@ public class UrlShortenerService {
 
     private String makeUrlShorter(String key) {
         StringBuilder sb = new StringBuilder();
-        sb.append(baseUrl).append(getOriginalUrlEndpoint).append(key);
+        sb.append(baseUrl).append(GetOriginalUrlEndpoint).append(key);
         return sb.toString();
     }
 }

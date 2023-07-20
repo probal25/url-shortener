@@ -1,5 +1,6 @@
 package ws.probal.urlshortener.common.handlers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,10 +12,12 @@ import ws.probal.urlshortener.common.exceptions.ResourceNotFoundException;
 import java.net.URI;
 
 @RestControllerAdvice
+@Slf4j
 public class UrlShortenerGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     ProblemDetail handleResourceNotFoundException(ResourceNotFoundException e) {
+        log.error("Resource not found", e);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
         problemDetail.setTitle("Resource Not Found");
         problemDetail.setProperty("exception type", "This is a business exception");
@@ -24,6 +27,7 @@ public class UrlShortenerGlobalExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(InvalidUrlException.class)
     ProblemDetail handleInvalidUrlException(InvalidUrlException e) {
+        log.error("Url is invalid", e);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
         problemDetail.setTitle("Url is invalid");
         problemDetail.setProperty("exception type", "This is a validation exception");
