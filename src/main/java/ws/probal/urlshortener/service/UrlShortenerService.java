@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ws.probal.urlshortener.common.exceptions.InvalidUrlException;
+import ws.probal.urlshortener.common.exceptions.ResourceNotFoundException;
 import ws.probal.urlshortener.common.utils.EncryptionUtils;
 import ws.probal.urlshortener.model.entity.redis.Url;
 import ws.probal.urlshortener.model.request.UrlRequest;
@@ -22,9 +24,13 @@ public class UrlShortenerService {
 
     @Value("${base.url}")
     private String baseUrl;
-    private final String GET_ORIGINAL_URL_ENDPOINT = "/api/v1/url-shortener/";
+    private final static String getOriginalUrlEndpoint = "/api/v1/url-shortener/";
 
     public ShortenedUrlResponse shortTheUrl(UrlRequest request) {
+
+        boolean validUrl = validateURL(request);
+        if (!validUrl)
+            throw new InvalidUrlException(request.getUrl());
 
         String originalUrl = request.getUrl();
         String key = EncryptionUtils.generateHash(originalUrl);
@@ -46,23 +52,22 @@ public class UrlShortenerService {
         Url url = urlRepository.findByKey(key).orElse(null);
 
         if (Objects.isNull(url)) {
-            throw new IllegalStateException("Could not find");
+            throw new ResourceNotFoundException(key);
         }
-
         return OriginalUrlResponse
                 .builder()
                 .originalUrl(url.getOriginalUrl())
                 .build();
     }
 
-    public static boolean validateRequest(UrlRequest request) {
+    private boolean validateURL(UrlRequest request) {
         UrlValidator validator = new UrlValidator(new String[]{"http", "https"});
         return validator.isValid(request.getUrl());
     }
 
     private String makeUrlShorter(String key) {
         StringBuilder sb = new StringBuilder();
-        sb.append(baseUrl).append(GET_ORIGINAL_URL_ENDPOINT).append(key);
+        sb.append(baseUrl).append(getOriginalUrlEndpoint).append(key);
         return sb.toString();
     }
 }
