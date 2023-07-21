@@ -29,8 +29,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     compileOnly 'commons-validator:commons-validator:1.4.0'
-    compileOnly 'com.google.guava:guava:23.0-rc1'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

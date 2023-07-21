@@ -39,8 +39,20 @@ public class UrlShortenerService {
         String originalUrl = request.getUrl();
         String key = EncryptionUtils.generateHash(originalUrl);
 
-        Url url = saveUrl(key, originalUrl);
+        Url urlByKey = findByKey(key);
+        if (Objects.nonNull(urlByKey)){
+            return ShortenedUrlResponse
+                    .builder()
+                    .shortUrl(urlByKey.getShortUrl())
+                    .build();
+        }
 
+        Url url = new Url();
+        url.setOriginalUrl(originalUrl);
+        url.setShortKey(key);
+        url.setShortUrl(makeUrlShorter(key));
+        url.setCreated(new Date());
+        url = saveUrl(url);
         return ShortenedUrlResponse
                 .builder()
                 .shortUrl(url.getShortUrl())
@@ -60,13 +72,8 @@ public class UrlShortenerService {
                 .build();
     }
 
-    @CachePut(value = "urls", key = "#key", unless = "#result == null")
-    public Url saveUrl(String key, String originalUrl) {
-        Url url = new Url();
-        url.setOriginalUrl(originalUrl);
-        url.setShortKey(key);
-        url.setShortUrl(makeUrlShorter(key));
-        url.setCreated(new Date());
+    @CachePut(value = "urls", key = "#url.shortKey")
+    public Url saveUrl(Url url) {
         return urlRepository.save(url);
     }
     @Cacheable(value = "urls", key = "#key")
