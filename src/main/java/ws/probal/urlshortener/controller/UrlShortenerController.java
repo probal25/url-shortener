@@ -4,6 +4,7 @@ package ws.probal.urlshortener.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ws.probal.urlshortener.common.utils.ApplicationUtils;
 import ws.probal.urlshortener.model.request.UrlRequest;
 import ws.probal.urlshortener.model.response.OriginalUrlResponse;
 import ws.probal.urlshortener.model.response.ShortenedUrlResponse;
@@ -11,7 +12,7 @@ import ws.probal.urlshortener.service.UrlShortenerService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/url-shortener")
+@RequestMapping(ApplicationUtils.userBasePath + "/url-shortener")
 public class UrlShortenerController {
 
     private final UrlShortenerService urlShortenerService;

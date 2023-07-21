@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 @Service
 public class EncryptionUtils {
 
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+
     public static String generateHash(String data) {
         MessageDigest digest;
         try {
