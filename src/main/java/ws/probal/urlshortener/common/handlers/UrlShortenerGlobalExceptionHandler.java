@@ -20,7 +20,7 @@ public class UrlShortenerGlobalExceptionHandler extends ResponseEntityExceptionH
         log.error("Resource not found", e);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
         problemDetail.setTitle("Resource Not Found");
-        problemDetail.setProperty("exception type", "This is a business exception");
+        problemDetail.setProperty("exception_type", "This is a business exception");
         problemDetail.setType(URI.create("http://localhost/error"));
         return problemDetail;
     }
@@ -30,7 +30,7 @@ public class UrlShortenerGlobalExceptionHandler extends ResponseEntityExceptionH
         log.error("Url is invalid", e);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
         problemDetail.setTitle("Url is invalid");
-        problemDetail.setProperty("exception type", "This is a validation exception");
+        problemDetail.setProperty("exception_type", "This is a validation exception");
         problemDetail.setType(URI.create("http://localhost/error"));
         return problemDetail;
     }
