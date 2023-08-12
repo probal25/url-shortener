@@ -19,9 +19,15 @@ public class ApplicationTracingAspect extends TraceLoggerAspect {
     @Pointcut("execution(* ws.probal.urlshortener.service..*.*(..)))")
     public void applicationServiceAspect() {}
 
-    @Around("applicationControllerAspect() && applicationServiceAspect()")
+    @Around("applicationServiceAspect() && !noLogging()")
     public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
         return trace(joinPoint);
     }
+
+    @Around("applicationControllerAspect()")
+    public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
+        return trace(joinPoint);
+    }
+
 
 }

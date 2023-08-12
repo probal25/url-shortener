@@ -11,7 +11,6 @@ public abstract class TraceLoggerAspect extends BaseLoggerAspect {
     private static final Logger traceLogger = LoggerFactory.getLogger("traceLogger");
 
     public Object trace(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("****************************************");
         String requestData = formatRequestParameters(joinPoint);
         traceLogger.trace(String.format("Invoking :: %s", requestData));
 

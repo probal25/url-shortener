@@ -18,8 +18,8 @@ public class UrlShortenerController {
     private final UrlShortenerService urlShortenerService;
 
     @PostMapping
-    public ResponseEntity<ShortenedUrlResponse> shortTheUrl(@RequestBody UrlRequest request) {
-        ShortenedUrlResponse response = urlShortenerService.shortTheUrl(request);
+    public ResponseEntity<ShortenedUrlResponse> shortTheUrl(@RequestBody UrlRequest urlRequest) {
+        ShortenedUrlResponse response = urlShortenerService.shortTheUrl(urlRequest);
         return ResponseEntity.ok(response);
     }
 
